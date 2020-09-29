@@ -1,0 +1,90 @@
+body {
+    background-color: #e6e6e6;
+    color: #343a40;
+}
+
+a.navbar-brand {
+    color: #66ccff !important;
+    font-weight: bold;
+}
+
+nav.navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+div.row {
+    margin-top: 60px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 10px;
+    /* margin: 4px 10px; */
+}
+
+div.custom-card-style {
+    max-height: 432px;
+    margin-top: 4px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+div.img-div {
+    height: 350px;
+    line-height: 350px;
+    padding: 2px 4px;
+}
+
+div.card img{
+    max-height: 350px;
+    object-fit: contain;    /*CSS 3*/
+    /* border-style: groove; */
+}
+
+div.card-body {
+    padding: 4px 6px !important;
+}
+
+div.card-body a {
+    color: #343a40;
+}
+
+/* div.card-body a:hover {
+    
+} */
+
+div.my-card-title {
+    min-height: 32px;
+    max-height: 32px;
+    line-height: 16px;
+    font-size: 10pt;
+    font-weight:bold;
+    text-align: center;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin-bottom: 0px;
+    margin-top: 4px;
+}
+
+div.card-body>hr {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+div.card-text>div {
+    font-size: 12px;
+    margin-top: 0px;
+    margin-bottom: 4px;
+}
+
+div.row div.custom-card-style:nth-child(2n+1) div.card {
+    background: #d9d9d9;
+}
+
+div.row div.custom-card-style:nth-child(2n+2) div.card {
+    background: #cccccc;
+}
