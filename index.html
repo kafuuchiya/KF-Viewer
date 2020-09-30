@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
     <title>Kafuu Viewer</title>
 
@@ -13,9 +14,15 @@
     <link rel="stylesheet" type="text/css" href="res\css\bootstrap.css">
     <script text="text/javascript" src="res\js\bootstrap.bundle.js"></script>
 
+    <!-- Fontawesome -->
+    <script text="text/javascript" src="res\js\fontawesome.js" crossorigin="anonymous"></script>
+
     <!-- My JS, CSS -->
     <script text="text/javascript" src="index.js"></script>
     <link rel="stylesheet" type="text/css" href="index.css">
+
+    <!-- web icon -->
+    <link rel="icon" href="res/img/KFV icon.png">
 
 </head>
 
@@ -34,6 +41,7 @@
             <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link active" href="#">Front Page<span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" href="#">Videos(Undeveloped)</a>
+                <a class="nav-item nav-link" href="#">Backend</a>
             </div>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -44,8 +52,23 @@
     </nav>
 
 
-
-
+    <nav class="top_pn d-flex justify-content-center" aria-label=" Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item disabled"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     <div class="container-fluid">
         <div class="row">
@@ -73,15 +96,100 @@
 
             </div> -->
 
-
-
-
-
-
-
         </div>
     </div>
 
+    <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item disabled"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="add-icon" data-toggle="modal" data-target="#exampleModalCenter">
+        <i class="far fa-plus-square fa-4x"></i>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form onsubmit="return false" id="uploadForm" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                            </div>
+                            <input id="itemName" name="itemName" type="text" class="form-control"
+                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Other Name</span>
+                            </div>
+                            <input id="itemOtherName" name="itemOtherName" type="text" class="form-control"
+                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Select File</span>
+                                <button class="ddBtn btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Type</button>
+                                <input id="itemFileType" name="itemFileType" type="text" hidden>
+                                <div class="dropdown-menu">
+                                  <div class="dropdown-item" href="javascript:void(0);" onclick="selectTypeForFiles(this)">ZIP</div>
+                                  <div class="dropdown-item" href="javascript:void(0);" onclick="selectTypeForFiles(this)">FILE</div>
+                                </div>
+                            </div>
+
+                            <input id="itemFile" name="itemFile" type="file" class="form-control"
+                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" disabled="disabled" required>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">File name</span>
+                            </div>
+                            <input id="itemFileName" name="itemFileName" type="text" class="form-control"
+                                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" onclick="addItem()">Add</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    
 </body>
 
 </html>
