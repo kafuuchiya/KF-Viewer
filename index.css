@@ -76,10 +76,6 @@ div.card-body a {
     color: #343a40;
 }
 
-/* div.card-body a:hover {
-    
-} */
-
 div.my-card-title {
     min-height: 32px;
     max-height: 32px;
@@ -129,13 +125,15 @@ div.add-icon:hover {
     color: #66ccff;
 }
 
+form.uploadForm input{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 div.type-now {
     color: #FFFFFF;
     background-color: #343a40;
 }
 
-
-/* .modal-body {
-    color: #000000;
-} */
 

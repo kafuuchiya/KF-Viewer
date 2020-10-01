@@ -46,6 +46,21 @@ function showItems() {
 
 
 function addItem() {
+    if(isNull($("#itemName").val())){
+        return;
+    }
+    if(isNull($("#itemOtherName").val())){
+        return;
+    }
+    if(isNull($("#itemFile").val())){
+        if(isNull($("#itemFileType").val())){
+            alert("Please select a upload type!");
+            return;
+        }
+        return;
+    }
+
+
     var data = new FormData($("#uploadForm")[0]);
 
     $.ajax({
@@ -57,7 +72,8 @@ function addItem() {
         contentType: false,
         data: data,
         success: function (results) {
-            // $("#exampleModalCenter").modal("hide");
+            console.log(results);
+            $("#exampleModalCenter").modal("hide");
             var res = JSON.parse(results);
             alert(res[1]);
             location.reload();
@@ -81,7 +97,8 @@ function inputSelectFilesEvent() {
             if (t_type.indexOf("zip") >= 0) {
                 // zip type
                 file_type = "ZIP";
-                name = $(filesList)[0].name;
+                var str_name = $(filesList)[0].name.split(".");
+                name = str_name[0];
             } else {
                 // non-zip type
                 file_type = "ERROR";
@@ -115,11 +132,21 @@ function inputSelectFilesEvent() {
 
 }
 
+function isNull(val) {
+    var str = val.replace(/(^\s*)|(\s*$)/g, '');
+    if (str == '' || str == undefined || str == null) {
+        // null
+        return true;
+    } else {
+        return false;
+    }
+}
+
 // To choose the format of the uploaded file
 function selectTypeForFiles(obj) {
     // To set default value is null
     $("#itemFile").val("");
-    $("#itemName").val("");
+    // $("#itemName").val("");
     $("#itemFileName").val("");
 
     // To delete class of old option and add to new option
@@ -132,7 +159,7 @@ function selectTypeForFiles(obj) {
     // To show the selected option 
     $('.ddBtn').text($(obj).text());
     // To set the type value
-    $('#itemFileType').text($(obj).text());
+    $('#itemFileType').val($(obj).text());
 
     // To set the type for different options
     if ($(obj).text() === "ZIP") {

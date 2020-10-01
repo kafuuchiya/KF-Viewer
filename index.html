@@ -138,7 +138,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
                             </div>
-                            <input id="itemName" name="itemName" type="text" class="form-control"
+                            <input id="itemName" name="itemName" type="text" class="form-control" placeholder="Please select an upload file, the file name will be inputted automatically."
                                 aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
                         </div>
 
@@ -146,7 +146,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Other Name</span>
                             </div>
-                            <input id="itemOtherName" name="itemOtherName" type="text" class="form-control"
+                            <input id="itemOtherName" name="itemOtherName" type="text" class="form-control" placeholder="Other languages name, or other name"
                                 aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
                         </div>
 
@@ -156,14 +156,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Select File</span>
                                 <button class="ddBtn btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Type</button>
-                                <input id="itemFileType" name="itemFileType" type="text" hidden>
+                                <input id="itemFileType" name="itemFileType" type="text" value="" hidden>
                                 <div class="dropdown-menu">
                                   <div class="dropdown-item" href="javascript:void(0);" onclick="selectTypeForFiles(this)">ZIP</div>
                                   <div class="dropdown-item" href="javascript:void(0);" onclick="selectTypeForFiles(this)">FILE</div>
                                 </div>
                             </div>
 
-                            <input id="itemFile" name="itemFile" type="file" class="form-control"
+                            <input id="itemFile" name="itemFile[]" type="file" class="form-control"
                                 aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" disabled="disabled" required>
                         </div>
 
@@ -171,7 +171,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">File name</span>
                             </div>
-                            <input id="itemFileName" name="itemFileName" type="text" class="form-control"
+                            <input id="itemFileName" name="itemFileName" type="text" class="form-control" placeholder="Please select an upload file, the file name will be inputted automatically."
                                 aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" readonly>
                         </div>
 
