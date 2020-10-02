@@ -16,9 +16,17 @@ nav.navbar {
     z-index: 999;
 }
 
-nav.top_pn ul.pagination {
+h5.data-len-show {
     margin-top: 62px;
+    text-align: center;
+}
+
+nav.top_pn ul.pagination {
     margin-bottom: 0px;
+}
+
+nav ul li a.disabled-a{
+    background-color: transparent !important;
 }
 
 nav ul.pagination a {
@@ -125,11 +133,20 @@ div.add-icon:hover {
     color: #66ccff;
 }
 
-form.uploadForm input{
+form#uploadForm input{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
+
+::-webkit-input-placeholder {
+    color: #bfbfbf !important;
+}
+
+:-ms-input-placeholder {
+    color: #bfbfbf !important;
+}
+
 
 div.type-now {
     color: #FFFFFF;

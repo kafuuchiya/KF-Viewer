@@ -2,64 +2,276 @@ $(document).ready(function () {
     init();
 });
 
+
 function init() {
 
-    showItems();
+    // To check the url if correct
+    if (String(getUrlRequest(0, 0)).indexOf("page") == 0 ||
+        typeof (getUrlRequest(0, 0)) == "undefined") {
+        // When the first value of url is "page" or no value
+        if (typeof (getUrlRequest(1, 0)) == "undefined") {
+            // When the second value of url does not exist
+            getItems();
+        } else if (String(getUrlRequest(1, 0)).indexOf("search") == 0 &&
+            typeof (getUrlRequest(2, 0)) == "undefined") {
+            // When the second value is “search” and the third value does not exist
+            searchItems();
+        } else {
+            window.location = window.location.pathname;
+        }
+    } else {
+        window.location = window.location.pathname;
+    }
+
     inputSelectFilesEvent();
 }
 
-function showItems() {
-    var title = "(T99) [test (Web Test)] This is a web test! Test-TEST(Test&Test&Test) [Test]";
-    // var cover = "res/img/004.jpg";
-    var time = "2020-09-28 18:17";
-    var page = "200 pages";
-    // var html = "<h5 class=\"col-sm-12\">no data!</h5>";
-    var html = "";
 
+function getUrlRequest(index_1, index_2) {
+    // Example:
+    // if url is "?page=10&search=AB"
+    // index_1, [0] to get page data or [1] to search search data
+    // index_2, [0] to get data key string "page" or [1] to get value "10"
 
-    for (i = 0; i < 50; i++) {
+    // Invalid value
+    if (index_1 < 0 || index_2 < 0) return;
 
+    var url = location.search; // To get the string after the “?” from the URL
 
-        var cover = "res/img/00" + (i % 4 + 1) + ".jpg";
-        // console.log(i+": "+(i%4+1) +" "+cover);
+    if (url.indexOf("?") != -1) { // To check if exists value
+        var urlStr = url.substr(1); // To get values from position 1 start because the position 0 is "?"
 
-        html_t = " <div class=\"col-xl-2 col-lg-3 col-md-4 col-sm-6 custom-card-style\">";
-        html_t += "<div class=\"card\">";
-        html_t += "<div class=\"img-div\">";
-        html_t += "<a href=\"#\"><img src=\"" + cover + "\" class=\"card-img-top\" alt=\"error\"> </a>";
-        html_t += "</div>";
-        html_t += "<div class=\"card-body\">";
-        html_t += "<a href=\"#\"><div class=\"card-title my-card-title\">" + title + "</div> </a>";
-        html_t += "<hr>";
-        html_t += "<div class=\"card-text d-flex justify-content-around\">";
-        html_t += "<div>" + time + "</div><div>" + page + "</div>";
-        html_t += "</div> </div> </div> </div>";
-        html += html_t;
+        var str, val_arr = [];
+
+        if (urlStr.indexOf("&") != -1) { // check if more values
+            // There are multiple values ​​on the URL string
+            str = urlStr.split("&");
+
+            for (var i = 0; i < str.length; i++) {
+                // To get all values
+                val_arr[i] = str[i].split("=");
+
+                // Example:
+                // if url is "?page=10&search=AB"
+                // val_arr[0] = {"page","10"}, val_arr[0][0] = page
+                // val_arr[1] = {"search","AB"}, val_arr[1][0] = search
+                // So, val_arr[0][0] = key, val_arr[0][1] = value
+            }
+            // return val_arr[num][1];
+
+        } else {
+            // There is only one value on the URL string
+            str = urlStr;
+            val_arr[0] = str.split("=");
+        }
+
+        // To prevent errors that exceed the length of the array
+        if (index_1 < val_arr.length)
+            // If it exceeds the length of index_2, it will return undefined
+            return val_arr[index_1][index_2];
+
     }
-
-    // console.log(html);
-    $(".row").append(html);
 }
 
 
+function getItems() {
+    var page = getUrlRequest(0, 1);
+    $.ajax({
+        type: "GET",
+        url: "get_items.php",
+        async: true,
+        data: {
+            page: page,
+        },
+        success: function (results) {
+            if (typeof results == 'string') {
+                try {
+                    var res = JSON.parse(results);
+                    showItems(res);
 
+                } catch (e) {
+                    alert("ERROR GET: " + e);
+                    console.log(results);
+                }
+            }
+
+        }
+    });
+}
+
+
+function showItems(res) {
+
+    setPagination(res[0]);
+    if (parseInt(res[0].data_len) == 0) {
+        $('.row').append("<h5 class=\"col-12\">no result</h5>");
+    } else {
+        var itemsInfo = res[1];
+        var itemsHtml = "";
+        $.each(itemsInfo, function (index, value) {
+            itemsHtml = "<div class=\"col-xl-2 col-lg-3 col-md-4 col-sm-6 custom-card-style\">";
+            itemsHtml += "<div class=\"card\">";
+            itemsHtml += "<div class=\"img-div\">";
+            itemsHtml += "<a href=\"#\"><img src=\"" + value.cover + "\" class=\"card-img-top\" alt=\"error\"> </a>";
+            itemsHtml += "</div>";
+            itemsHtml += "<div class=\"card-body\">";
+            itemsHtml += "<a href=\"#\"><div class=\"card-title my-card-title\">" + value.name + "</div> </a>";
+            itemsHtml += "<hr>";
+            itemsHtml += "<div class=\"card-text d-flex justify-content-around\">";
+            itemsHtml += "<div>" + value.time.substr(0, 16) + "</div><div>" + value.page + " pages</div>";
+            itemsHtml += "</div> </div> </div> </div>";
+            $(".row").append(itemsHtml);
+        });
+        $('.data-len-show').text("Showing " + res[0].data_len + " results");
+    }
+
+}
+
+
+function setPagination(pageInfo) {
+    var pt_html = "";
+    var pg_c = pageInfo.page_count;
+    var pg_n = pageInfo.now_page;
+    var url_str = "";
+    var url_pathname = window.location.pathname;
+
+    if (String(getUrlRequest(1, 0)).indexOf("search") == 0) {
+        url_str = "&search=" + $("#f_search").val();
+    }
+
+    // pre page button
+    if (pg_n == 1) {
+        pt_html += "<li class=\"page-item disabled\">";
+        pt_html += "<a class=\"page-link disabled-a\" href=\"#\" aria-label=\"Previous\">";
+        pt_html += "<span aria-hidden=\"true\">&laquo;</span>";
+        pt_html += "</a></li>";
+    } else {
+        pt_html += "<li class=\"page-item\">";
+        pt_html += "<a class=\"page-link\" href=\"" + url_pathname + "?page=" + (pg_n - 1) + url_str + "\" aria-label=\"Previous\">";
+        pt_html += "<span aria-hidden=\"true\">&laquo;</span>";
+        pt_html += "</a></li>";
+    }
+
+    // Middle page number button
+    if (pg_c <= 8) {
+        // case in page count <=8
+        pt_html += setMiddlePage(1, pg_c, pg_n);
+
+    } else {
+        // case in page count >8
+        if (pg_n <= 4) {
+            // case in now page <4
+            // set middle page
+            pt_html += setMiddlePage(1, 7, pg_n);
+            // selection prompt of page
+            pt_html += "<li class=\"page-item\"><a class=\"page-link\" onclick=\"setSelectPage(" + pg_c + ")\">...</a></li>";
+            // last page
+            pt_html += "<li class=\"page-item\">";
+            pt_html += "<a class=\"page-link\" href=\"" + url_pathname + "?page=" + pg_c + url_str + "\">" + pg_c + "</a></li>";
+
+        } else if (pg_n > (pg_c - 4)) {
+            // case of the now page on the last four page
+            // home page
+            pt_html += "<li class=\"page-item\">";
+            pt_html += "<a class=\"page-link\" href=\"" + url_pathname + "?page=1" + url_str + "\">1</a></li>";
+            // selection prompt of page
+            pt_html += "<li class=\"page-item\"><a class=\"page-link\" onclick=\"setSelectPage(" + pg_c + ")\">...</a></li>";
+            // set middle page
+            pt_html += setMiddlePage((pg_c - 4), pg_c, pg_n);
+        } else {
+            // case in the number of now page is more than 4 and less than the last four page
+            // home page
+            pt_html += "<li class=\"page-item\">";
+            pt_html += "<a class=\"page-link\" href=\"" + url_pathname + "?page=1" + url_str + "\">1</a></li>";
+            // selection prompt of page
+            pt_html += "<li class=\"page-item\"><a class=\"page-link\" onclick=\"setSelectPage(" + pg_c + ")\">...</a></li>";
+            // set middle page
+            pt_html += setMiddlePage((pg_n - 2), (pg_n + 2), pg_n);
+            // selection prompt of page
+            pt_html += "<li class=\"page-item\"><a class=\"page-link\" onclick=\"setSelectPage(" + pg_c + ")\">...</a></li>";
+            // last page
+            pt_html += "<li class=\"page-item\">";
+            pt_html += "<a class=\"page-link\" href=\"" + url_pathname + "?page=" + pg_c + url_str + "\">" + pg_c + "</a></li>";
+        }
+    }
+
+    // next page button
+    if (pg_n == pg_c || pg_c == 0) {
+        pt_html += "<li class=\"page-item disabled\">";
+        pt_html += "<a class=\"page-link disabled-a\" href=\"#\" aria-label=\"Next\">";
+        pt_html += "<span aria-hidden=\"true\">&raquo;</span>";
+        pt_html += "</a></li>";
+    } else {
+        pt_html += "<li class=\"page-item\">";
+        pt_html += "<a class=\"page-link\" href=\"" + url_pathname + "?page=" + (pg_n + 1) + url_str + "\" aria-label=\"Next\">";
+        pt_html += "<span aria-hidden=\"true\">&raquo;</span>";
+        pt_html += "</a></li>";
+    }
+
+    $(".pagination").html(pt_html);
+}
+
+
+function setMiddlePage(index, total, now) {
+    var html = "";
+
+    var url_str = "";
+    var url_pathname = window.location.pathname;
+
+    if (String(getUrlRequest(1, 0)).indexOf("search") == 0) {
+        // url_pt_str = "?page=1&search=" + $("#f_search").val();
+        url_str = "&search=" + $("#f_search").val();
+    }
+
+    if (total == 0) {
+        html += "<li class=\"page-item disabled\">";
+        html += "<a class=\"page-link\" href=\"#\">1</a></li>";
+    } else {
+        for (var i = index; i <= total; i++) {
+            if (i == now) {
+                html += "<li class=\"page-item disabled\">";
+                html += "<a class=\"page-link\" href=\"#\">" + i + "</a></li>";
+            } else {
+
+                html += "<li class=\"page-item\">";
+                html += "<a class=\"page-link\" href=\"" + url_pathname + "?page=" + i + url_str + "\">" + i + "</a></li>";
+
+            }
+        }
+    }
+
+    return html;
+
+}
+
+
+function setSelectPage(total_page) {
+    var url_str = "";
+    if (String(getUrlRequest(1, 0)).indexOf("search") == 0) {
+        url_str = "&search=" + $("#f_search").val();
+    }
+    var page = prompt('Jump to page: (1-' + total_page + ')', 1);
+
+    if (page != null && page <= total_page && page >= 1) {
+        window.location = '?page=' + page + url_str;
+    }
+}
 
 
 function addItem() {
-    if(isNull($("#itemName").val())){
+    if (isNull($("#itemName").val())) {
         return;
     }
-    if(isNull($("#itemOtherName").val())){
+    if (isNull($("#itemOtherName").val())) {
         return;
     }
-    if(isNull($("#itemFile").val())){
-        if(isNull($("#itemFileType").val())){
+    if (isNull($("#itemFile").val())) {
+        if (isNull($("#itemFileType").val())) {
             alert("Please select a upload type!");
             return;
         }
         return;
     }
-
 
     var data = new FormData($("#uploadForm")[0]);
 
@@ -72,16 +284,26 @@ function addItem() {
         contentType: false,
         data: data,
         success: function (results) {
-            console.log(results);
-            $("#exampleModalCenter").modal("hide");
-            var res = JSON.parse(results);
-            alert(res[1]);
-            location.reload();
+            if (typeof results == 'string') {
+                try {
+                    var res = JSON.parse(results);
+                    alert(res[1]);
+                    $("#exampleModalCenter").modal("hide");
+                    location.reload();
+
+                } catch (e) {
+                    alert("ERROR Add: " + e);
+                    console.log(results);
+
+                }
+            }
+
         }
 
     });
 
 }
+
 
 // To listen the info of the inputting file 
 function inputSelectFilesEvent() {
@@ -93,7 +315,7 @@ function inputSelectFilesEvent() {
         var t_type = $(filesList)[0].type;
 
         // To check the file format
-        if (length==1){
+        if (length == 1) {
             if (t_type.indexOf("zip") >= 0) {
                 // zip type
                 file_type = "ZIP";
@@ -106,7 +328,7 @@ function inputSelectFilesEvent() {
                 $("#itemFile").val("");
                 alert("Please make sure this is a zip file");
             }
-        }else if (length >1){
+        } else if (length > 1) {
             // Suppose all are img type 
             var str = filesList[0].webkitRelativePath.split("/");
             name = str[0];
@@ -132,6 +354,7 @@ function inputSelectFilesEvent() {
 
 }
 
+
 function isNull(val) {
     var str = val.replace(/(^\s*)|(\s*$)/g, '');
     if (str == '' || str == undefined || str == null) {
@@ -141,6 +364,7 @@ function isNull(val) {
         return false;
     }
 }
+
 
 // To choose the format of the uploaded file
 function selectTypeForFiles(obj) {
@@ -170,5 +394,53 @@ function selectTypeForFiles(obj) {
         $("#itemFile").attr("webkitdirectory", "");
     }
 
+}
+
+
+function searchFunc() {
+    var search_val = $("#f_search").val();
+    console.log(search_val);
+
+    if (search_val.length == 0) {
+        window.location = window.location.pathname;
+    } else {
+        window.location = '?page=1&search=' + search_val;
+    }
+}
+
+function searchItems() {
+
+    $("#f_search").val(decodeURI(getUrlRequest(1, 1)));
+    var search_data = $("#f_search").val();
+    var page = getUrlRequest(0, 1);
+
+    if (String(search_data).indexOf(",") != -1) {
+        search_data = search_data.split(",");
+    } else {
+        search_data[0] = search_data;
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "search_items.php",
+        async: true,
+        data: {
+            key_word: search_data,
+            page: page
+        },
+        success: function (results) {
+            if (typeof results == 'string') {
+                try {
+                    var res = JSON.parse(results);
+                    showItems(res);
+
+                } catch (e) {
+                    alert("ERROR Search: " + e);
+                    console.log(results);
+                }
+            }
+
+        }
+    });
 
 }
