@@ -164,6 +164,10 @@ function delAllFiles($dir)
             }
         }
     }
+
+    if (is_file($dir)){
+        unlink($dir);
+    }
 }
 
 // To delete the empty files

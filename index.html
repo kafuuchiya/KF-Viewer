@@ -29,7 +29,7 @@
 <body>
     <!-- navigation bar -->
     <nav class="navbar navbar-dark navbar-expand-lg navbar-light bg-dark">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/kf-viewer/">
             <img src="res/img/KFV icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
             KF-Viewer
         </a>
@@ -41,7 +41,7 @@
             <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link active" href="/kf-viewer/">Front Page<span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" href="javascript:void(0);">Videos(Undeveloped)</a>
-                <a class="nav-item nav-link" href="/kf-viewer/Backend/">Backend</a>
+                <a class="nav-item nav-link" href="/kf-viewer/backend/">Backend</a>
             </div>
             <form onsubmit="return false" id="searchForm" class="form-inline my-2 my-lg-0">
                 <input id="f_search" name="f_search" class="form-control mr-sm-2"  type="search" placeholder="Search Keywords" aria-label="Search">
@@ -179,8 +179,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" onclick="addItem()">Add</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
 
