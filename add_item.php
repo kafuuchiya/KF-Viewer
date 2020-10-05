@@ -53,9 +53,16 @@ if (strcmp($files_type, "ZIP") == 0) {
         mkdir($file_path);
     }
     $count = count($files['tmp_name']);
+    $allowSuffix = ['png', 'jpeg', 'jpg', 'gif', 'bmp'];
+
     for ($i = 0; $i < $count; $i++) {
         $file_name = $files['name'][$i];
-        $result1 = move_uploaded_file($files["tmp_name"][$i], $file_path . '/' . $files["name"][$i]);
+        $info = pathinfo($files['name'][$i]);
+        $suffix = $info['extension'];
+
+        if (in_array($suffix, $allowSuffix)) {
+            $result = move_uploaded_file($files["tmp_name"][$i], $file_path . '/' . $files["name"][$i]);
+        }
     }
     $page = $count;
 }

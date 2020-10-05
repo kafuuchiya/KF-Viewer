@@ -106,6 +106,11 @@
             $sql = 'SELECT * FROM items' .$condition. ' ORDER BY id DESC';
             $qobj = mysqli_query($conn, $sql);
 
+            if (isset($_GET['width'])){
+                echo "<script>console.log(".$_GET['width']. ");</script>";
+            } 
+
+
             while ($row = mysqli_fetch_array($qobj)) {
 
                 echo '<tr>';

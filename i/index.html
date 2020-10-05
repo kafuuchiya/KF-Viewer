@@ -15,17 +15,117 @@
     <link rel="stylesheet" type="text/css" href="..\res\css\bootstrap.css">
     <script text="text/javascript" src="..\res\js\bootstrap.bundle.js"></script>
 
+    <!-- front page CSS -->
+    <link rel="stylesheet" type="text/css" href="../index.css">
+
     <!-- My JS, CSS -->
-    <script text="text/javascript" src="index.js"></script>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <script text="text/javascript" src="i.js"></script>
+    <link rel="stylesheet" type="text/css" href="i.css">
 
     <!-- web icon -->
-    <link rel="icon" href="res/img/KFV icon.png">
-    
+    <link rel="icon" href="../res/img/KFV icon.png">
+
 </head>
 
 <body>
-    
+    <!-- navigation bar -->
+    <nav class="navbar navbar-dark navbar-expand-lg navbar-light bg-dark">
+        <a class="navbar-brand" href="/kf-viewer/">
+            <img src="../res/img/KFV icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            KF-Viewer
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="/kf-viewer/">Front Page</a>
+                <a class="nav-item nav-link" href="javascript:void(0);">Videos(Undeveloped)</a>
+                <a class="nav-item nav-link" href="/kf-viewer/backend/">Backend</a>
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- data show -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3">
+                <img class="cover" src="" alt="cover">
+            </div>
+            <div class="col-xl-9">
+                <div class="title">
+                    <h1 class="itemName"></h1>
+                    <h1 class="itemOtherName"></h1>
+                </div>
+
+                <div class="itemInfo d-flex justify-content-start">
+                    <!-- item info -->
+                    <div class="infoL">
+                        <div class="type">PHOTO</div>
+                        <div class="uploader"><a href="javascript:void(0);">Uploader</a></div>
+                        <div class="iInfo">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Posted:</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Author:</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Language:</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>File Size</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Length:</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="infoR d-flex align-items-center">This is an undeveloped area, it may be a tag area or a
+                        description area in the future.</div>
+                </div>
+            </div>
+        </div>
+
+
+        <p class="data-len-show"></p>
+
+        <!-- Pagination -->
+        <nav class="top_pn d-flex justify-content-center" aria-label=" Page navigation example">
+            <ul class="pagination">
+            </ul>
+        </nav>
+
+        <!-- data show -->
+        <div class="row no-gutters dshow">
+            <!-- <div class="col-xl-1 col-lg-2 col-md-3 col-sm-4 col-4 d-flex justify-content-center">
+                <a href="#">
+                    <img src="" alt="">
+                    <div class="pageN">1</div>
+                </a>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Pagination bottom-->
+    <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+        <ul class="pagination">
+
+        </ul>
+    </nav>
 </body>
 
 </html>

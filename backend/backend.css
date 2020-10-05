@@ -15,6 +15,7 @@ table {
 th,
 td {
     border: 1px solid black;
+    text-overflow: ellipsis;
 }
 
 th,
@@ -44,3 +45,14 @@ tbody>tr:hover {
     background-color: #e6e6e6;
 }
 
+
+div.modal-body input{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+@media only screen and (max-width: 992px) {
+
+}

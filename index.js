@@ -14,7 +14,7 @@ function init() {
             getItems();
         } else if (String(getUrlRequest(1, 0)).indexOf("search") == 0 &&
             typeof (getUrlRequest(2, 0)) == "undefined") {
-            // When the second value is “search” and the third value does not exist
+            // When the second value is "search" and the third value does not exist
             searchItems();
         } else {
             window.location = window.location.pathname;
@@ -36,7 +36,7 @@ function getUrlRequest(index_1, index_2) {
     // Invalid value
     if (index_1 < 0 || index_2 < 0) return;
 
-    var url = location.search; // To get the string after the “?” from the URL
+    var url = location.search; // To get the string after the "?" from the URL
 
     if (url.indexOf("?") != -1) { // To check if exists value
         var urlStr = url.substr(1); // To get values from position 1 start because the position 0 is "?"
@@ -44,7 +44,7 @@ function getUrlRequest(index_1, index_2) {
         var str, val_arr = [];
 
         if (urlStr.indexOf("&") != -1) { // check if more values
-            // There are multiple values ​​on the URL string
+            // There are multiple values on the URL string
             str = urlStr.split("&");
 
             for (var i = 0; i < str.length; i++) {
@@ -57,7 +57,6 @@ function getUrlRequest(index_1, index_2) {
                 // val_arr[1] = {"search","AB"}, val_arr[1][0] = search
                 // So, val_arr[0][0] = key, val_arr[0][1] = value
             }
-            // return val_arr[num][1];
 
         } else {
             // There is only one value on the URL string
@@ -109,13 +108,13 @@ function showItems(res) {
         var itemsInfo = res[1];
         var itemsHtml = "";
         $.each(itemsInfo, function (index, value) {
-            itemsHtml = "<div class=\"col-xl-2 col-lg-3 col-md-4 col-sm-6 custom-card-style\">";
+            itemsHtml = "<div class=\"col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 custom-card-style\">";
             itemsHtml += "<div class=\"card\">";
             itemsHtml += "<div class=\"img-div\">";
-            itemsHtml += "<a href=\"#\"><img src=\"" + value.cover + "\" class=\"card-img-top\" alt=\"error\"> </a>";
+            itemsHtml += "<a href=\"/KF-Viewer/i?id=" + value.id + "\"><img src=\"" + value.cover + "\" class=\"card-img-top\" alt=\"error\"> </a>";
             itemsHtml += "</div>";
             itemsHtml += "<div class=\"card-body\">";
-            itemsHtml += "<a href=\"#\"><div class=\"card-title my-card-title\">" + value.name + "</div> </a>";
+            itemsHtml += "<a href=\"/KF-Viewer/i?id=" + value.id + "\"><div class=\"card-title my-card-title\">" + value.name + "</div> </a>";
             itemsHtml += "<hr>";
             itemsHtml += "<div class=\"card-text d-flex justify-content-around\">";
             itemsHtml += "<div>" + value.time.substr(0, 16) + "</div><div>" + value.page + " pages</div>";
@@ -273,34 +272,39 @@ function addItem() {
         return;
     }
 
-    var data = new FormData($("#uploadForm")[0]);
+    if (file_type.indexOf("ERROR") < 0) {
+        var data = new FormData($("#uploadForm")[0]);
 
-    $.ajax({
-        type: "POST",
-        url: "add_item.php",
-        async: true,
-        cache: false,
-        processData: false,
-        contentType: false,
-        data: data,
-        success: function (results) {
-            if (typeof results == 'string') {
-                try {
-                    var res = JSON.parse(results);
-                    alert(res[1]);
-                    $("#exampleModalCenter").modal("hide");
-                    location.reload();
+        $.ajax({
+            type: "POST",
+            url: "add_item.php",
+            async: true,
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: data,
+            success: function (results) {
+                if (typeof results == 'string') {
+                    try {
+                        console.log(results);
 
-                } catch (e) {
-                    alert("ERROR Add: " + e);
-                    console.log(results);
+                        var res = JSON.parse(results);
+                        alert(res[1]);
+                        $("#exampleModalCenter").modal("hide");
+                        location.reload();
 
+                    } catch (e) {
+                        alert("ERROR Add: " + e);
+                        console.log(results);
+
+                    }
                 }
+
             }
 
-        }
+        });
+    }
 
-    });
 
 }
 
@@ -309,42 +313,56 @@ function addItem() {
 function inputSelectFilesEvent() {
     $(document).on('change', '#itemFile', function () {
         var filesList = document.querySelector('#itemFile').files;
-        var name;
         var length = $(filesList).length;
-        // Temporary type
-        var t_type = $(filesList)[0].type;
+        var name = "";
 
-        // To check the file format
-        if (length == 1) {
-            if (t_type.indexOf("zip") >= 0) {
-                // zip type
-                file_type = "ZIP";
-                var str_name = $(filesList)[0].name.split(".");
-                name = str_name[0];
-            } else {
-                // non-zip type
-                file_type = "ERROR";
-                // length = 0;
-                $("#itemFile").val("");
-                alert("Please make sure this is a zip file");
-            }
-        } else if (length > 1) {
-            // Suppose all are img type 
-            var str = filesList[0].webkitRelativePath.split("/");
-            name = str[0];
-            file_type = "IMG";
+        if (length != 0) {
+            // Temporary type
+            var t_type = $(filesList)[0].type;
+            // selected type of upload
+            var iFileType = $('#itemFileType').val();
 
-            // To check the uploaded file if has a non-image type
-            for (i = 0; i < length; i++) {
-                if (filesList[i].type.indexOf("image") == -1) {
+            // To check the file format
+            if (length == 1 && iFileType.indexOf("ZIP") != -1) {
+                if (t_type.indexOf("zip") != -1) {
+                    // zip type
+                    file_type = "ZIP";
+                    var str_name = $(filesList)[0].name.split(".");
+                    name = str_name[0];
+                } else {
+                    // non-zip type
                     file_type = "ERROR";
                     // length = 0;
-                    name = "";
                     $("#itemFile").val("");
-                    alert("Please make sure there are only pictures in the folder");
-                    break;
+                    alert("Please make sure this is a zip file");
                 }
+            } else {
+                // To check the uploaded file if has a non-image type
+                for (i = 0; i < length; i++) {
+                    // desktop.ini is a hidden configuration file
+                    // If you have made custom changes to the file, such as changing the icon. There will be this file
+                    // It will be captured in chrome upload
+                    if (filesList[i].type.indexOf("image") == -1 && filesList[i].name.indexOf("desktop.ini") == -1) {
+                        
+                        f_name = filesList[i].name;
+                        file_type = "ERROR";
+                        // length = 0;
+                        $("#itemFile").val("");
+                        alert("Please make sure there are only pictures in the folder => " + f_name);
+                        break;
+                    }
+                }
+                // Suppose all are img type 
+                var str = filesList[0].webkitRelativePath.split("/");
+                name = str[0];
+                file_type = "IMG";
+
             }
+
+        } else {
+            $("#itemFile").val("");
+            alert("Empty file!");
+            return;
         }
 
         $("#itemFileName").val(name);
