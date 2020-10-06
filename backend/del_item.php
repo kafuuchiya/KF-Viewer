@@ -63,14 +63,46 @@ if (mysqli_affected_rows($conn)>0){
 }
 
 $recycle_folder = "../res/recycle bin";
+$dest = $recycle_folder.'/'.pathinfo($file_path)['basename'];
 
 if (!file_exists($recycle_folder)){
     mkdir($recycle_folder);
 }
 
-rename("../".$file_path, $recycle_folder.'/'.pathinfo($file_path)['basename']);
+
+if (file_exists($dest)){
+    delAllFiles($dest);
+    rmdir($dest);
+}
+
+
+rename("../".$file_path, $dest);
 
 
 echo $msg;
 mysqli_close( $conn );
 
+// To delete all files
+function delAllFiles($dir)
+{
+
+    if (is_dir($dir)) {
+
+        $files_arr = scandir($dir);
+        foreach ($files_arr as $file_t) {
+            if ($file_t != "." && $file_t != "..") {
+
+                if (is_dir($dir . '/' . $file_t)) {
+                    delAllFiles($dir . '/' . $file_t);
+                    rmdir($dir . '/' . $file_t);
+                } else {
+                    unlink($dir . '/' . $file_t);
+                }
+            }
+        }
+    }
+
+    if (is_file($dir)) {
+        unlink($dir);
+    }
+}

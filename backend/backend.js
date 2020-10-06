@@ -132,7 +132,7 @@ function delItem() {
         },
         success: function (results) {
             // alert(results);
-            console.log(results);
+            // console.log(results);
 
             if (typeof results == 'string') {
                 try {

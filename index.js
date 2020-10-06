@@ -85,6 +85,7 @@ function getItems() {
         success: function (results) {
             if (typeof results == 'string') {
                 try {
+                    // console.log(results);
                     var res = JSON.parse(results);
                     showItems(res);
 
@@ -274,7 +275,7 @@ function addItem() {
 
     if (file_type.indexOf("ERROR") < 0) {
         var data = new FormData($("#uploadForm")[0]);
-
+        // data.forEach(val => console.log(val));
         $.ajax({
             type: "POST",
             url: "add_item.php",
@@ -286,8 +287,6 @@ function addItem() {
             success: function (results) {
                 if (typeof results == 'string') {
                     try {
-                        console.log(results);
-
                         var res = JSON.parse(results);
                         alert(res[1]);
                         $("#exampleModalCenter").modal("hide");

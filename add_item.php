@@ -97,8 +97,21 @@ function checkFileInfo($dir)
     $filespath = array();
     // To get file information and move the file to the root directory (if the file is located in subfile)
     getAllFilesInfo($dir, $filespath);
+
     // To delete empty files
     delEmptyFiles($dir);
+
+    // To check the zip file if empty
+    if (count($filespath) == 0) { // "." and "..", so = 2
+        $msg = [
+            FALSE,
+            "Error, empty files!"
+        ];
+        delAllFiles($dir);
+        rmdir($dir);
+        echo json_encode($msg);
+        exit();
+    }
 
     // To check whether the file suffix is ​​a picture type
     $allowSuffix = ['png', 'jpeg', 'jpg', 'gif', 'bmp'];
@@ -109,7 +122,7 @@ function checkFileInfo($dir)
 
             $msg = [
                 FALSE,
-                "Error, non-image files! " . $info['basename']
+                "Error, non-image file! " . $info['basename']
             ];
             delAllFiles($dir);
             rmdir($dir);
@@ -141,9 +154,16 @@ function getAllFilesInfo($dir, &$filespath)
     // To check if it is a file
     if (is_file($dir)) {
         global $file_path;
+
+        if (strcmp("desktop.ini", pathinfo($dir)['basename'])==0){
+            unlink($dir);
+            return;
+        }
+        
+        // add file to arr
         $filespath[] = $dir;
 
-        // To move the subfile in sub-directory to $file_path
+        // To check if it is in $file_path, if not, move it
         if (strcmp($file_path, pathinfo($dir)['dirname']) != 0) {
 
             copy($dir, $file_path . "/" . pathinfo($dir)['basename']);
@@ -172,7 +192,7 @@ function delAllFiles($dir)
         }
     }
 
-    if (is_file($dir)){
+    if (is_file($dir)) {
         unlink($dir);
     }
 }
