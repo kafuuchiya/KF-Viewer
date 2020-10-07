@@ -18,9 +18,9 @@ First of all, **Kafuu-Viewer** was developed according to my own needs. The purp
     * File upload in different situations, such as **folder** upload or **ZIP** upload.
     * Generate a file named "**delete log.txt**" to record the details when the file is deleted, and then move the deleted file to a folder named "**Recycle Bin**". (No need to actually delete the files)
     
-2. The responsive web design for mobile
+2. Display some related items by searching names
 
-3. You can search for related files by name and display
+3. The responsive web design for mobile
 
 ## Introduction
 This project mainly uses a local server to store data. Getting data through PHP and SQL statements. 
@@ -28,6 +28,17 @@ This project mainly uses a local server to store data. Getting data through PHP 
 The flow chart is as follows:
 
 ![flow chart](https://i.imgur.com/3SQy5Wm.png)
+
+**Database:**
+- name: kf-viewer
+- table: items
+
+![database img](https://i.imgur.com/DwT9LL0.png)
+
+**PHP.ini setting:**
+- upload_max_filesize = 2G
+- max_file_uploads = 2000
+- post_max_size = 2G
 
 ### 1. Technology
   |   Tools    |  Language  | Third party                               |
