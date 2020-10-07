@@ -16,8 +16,13 @@ $qobj_check = mysqli_query($conn, $sql_check);
 $res_check = mysqli_fetch_assoc($qobj_check);
 
 // To set default path
-$d_path = "res/items/";
-$file_path = $d_path . $file_name;
+$d_path = "res/items";
+$file_path = $d_path ."/" . $file_name;
+
+if (!file_exists($d_path)){
+    mkdir($d_path);
+}
+
 
 // To check the file if exists
 if (file_exists($file_path) or $res_check['count'] > 0) {

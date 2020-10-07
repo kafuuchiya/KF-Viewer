@@ -109,7 +109,7 @@ function showItems(res) {
         var itemsInfo = res[1];
         var itemsHtml = "";
         $.each(itemsInfo, function (index, value) {
-            itemsHtml = "<div class=\"col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 custom-card-style\">";
+            itemsHtml = "<div class=\"col-xl-2 col-lg-3 col-md-4 col-sm-6 custom-card-style\">";
             itemsHtml += "<div class=\"card\">";
             itemsHtml += "<div class=\"img-div\">";
             itemsHtml += "<a href=\"/KF-Viewer/i?id=" + value.id + "\"><img src=\"" + value.cover + "\" class=\"card-img-top\" alt=\"error\"> </a>";

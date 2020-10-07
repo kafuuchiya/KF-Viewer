@@ -6,6 +6,10 @@ div.container-fluid .row:nth-child(1) {
     border: none;
 }
 
+div.container-fluid .row:nth-child(1)>div:nth-child(1) {
+    margin: auto;
+}
+
 div.dshow a{
     text-decoration: none;
 }
