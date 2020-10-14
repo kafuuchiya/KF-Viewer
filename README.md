@@ -43,7 +43,7 @@ The flow chart is as follows:
 ### 1. Technology
   |   Tools    |  Language  | Third party                               |
   |:----------:|:----------:|:-----------------------------------------:|
-  | WampServer |    HTML    | [Jquery](https://jquery.com/)             |
+  | WampServer |    HTML    | [jQuery](https://jquery.com/)             |
   |  VS code   | JavaScript | [Bootstrap](https://getbootstrap.com/)    |
   |  Navicat   |    CSS     | [Font Awesome](https://fontawesome.com/)  |
   | Photoshop  |    PHP     |                                           |
