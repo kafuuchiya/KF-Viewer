@@ -88,10 +88,16 @@ function getItems() {
                     // console.log(results);
                     var res = JSON.parse(results);
                     showItems(res);
-
+                    
                 } catch (e) {
                     alert("ERROR GET: " + e);
                     console.log(results);
+                    r = [{
+                        page_count:1,
+                        now_page:1,
+                        data_len: 0,
+                    },{}];
+                    showItems(r);
                 }
             }
 
